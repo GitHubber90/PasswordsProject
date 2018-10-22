@@ -43,11 +43,11 @@ with open(file3, 'r') as file:
     for line in file:
         password = line.partition("\t")# cuts the password from the username
         list_duplicates.append(password[2])#appends a list, this is to be used in a dictionary
-        #
-        # if multiples(newNode, password[2]) is False:#if there are no multiples create a new node
-        #     newNode = Node(password[2],1, newNode)
-        # else:
-        #     newNode.count +=1#if multiples just increase count
+        
+        if multiples(newNode, password[2]) is False:#if there are no multiples create a new node
+             newNode = Node(password[2],1, newNode)
+        else:
+             newNode.count +=1#if multiples just increase count
 
 
     for item in list_duplicates:#fills the dictionary
