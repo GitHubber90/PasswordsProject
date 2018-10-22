@@ -1,0 +1,110 @@
+class Node(object):
+    passwords = ""
+    count = -1
+    next = None
+
+    def __init__(self,password, count, next):
+        self.password = password
+        self.count=count
+        self.next=next
+
+
+def dic_to_linked(dict,dict_list):#dumps all data from the linked list to dictionary
+    for key, value in dict.items():
+        dict_list = Node(key,value, dict_list)
+
+    return dict_list
+
+#checks the list to see if the password was there before
+def multiples(head, item):
+        if head == None:#no multiples if the list is empty
+            return False
+
+        while head != None:
+            if head.password == item:#iterates through the list to see if there are multiples and if there are we return true
+                return True
+            head = head.next
+
+        return False
+
+#TESTS
+file1 = 'passwords.txt'
+file2 ='allpasswords.txt'
+file3 = '10-million-combos.txt'
+
+
+
+with open(file3, 'r') as file:
+    fileconts = file.readline()
+    newNode = None
+    dict ={}
+    list_duplicates = []
+
+    for line in file:
+        password = line.partition("\t")# cuts the password from the username
+        list_duplicates.append(password[2])#appends a list, this is to be used in a dictionary
+        #
+        # if multiples(newNode, password[2]) is False:#if there are no multiples create a new node
+        #     newNode = Node(password[2],1, newNode)
+        # else:
+        #     newNode.count +=1#if multiples just increase count
+
+
+    for item in list_duplicates:#fills the dictionary
+        if item in dict:
+            dict[item]=dict[item]+1#if item is not in dictionary it gets added
+        else:
+            dict[item]=1#if it is there the value gets increased
+
+
+
+
+
+def sort_descending(head):#Bubble sorting method
+    sorted = False
+    counter=0
+
+    while not sorted:
+        sorted =True
+        previous = head
+        current = head.next
+        while current !=None:
+            if previous.count < current.count:
+                sorted =False
+                swap(previous,current)
+                counter+=1
+
+            previous =current
+            current=current.next
+
+
+
+
+
+
+def swap(Node1,Node2):#Swap method for the bubble sorting
+    temp =Node
+    temp.password=Node1.password
+    temp.count=Node1.count
+    Node1.password=Node2.password
+    Node1.count=Node2.count
+    Node2.password=temp.password
+    Node2.count=temp.count
+
+dict_list =None#this is the start of a new linked list that was first a dictionary and modified to a linked list
+dict_list=dic_to_linked(dict,dict_list)#Calls the method to convert a dictionary to linked list
+sort_descending(dict_list)#bubble sort the list
+sort_descending(newNode)#bubble sorting the original list
+
+#This just prints out the list
+for i in range(20):
+    print(dict_list.password,'count:',dict_list.count)
+    dict_list=dict_list.next
+
+
+
+
+# sortedByValue=sorted(dict.items(),key=lambda t:t[1],reverse=True)
+# for i in range(20):
+#     print(sortedByValue[i])
+#I did this to print out the 20 most used passwords really fast from the 10 million passwords
